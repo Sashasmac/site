@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="header">Smacnie APK GROUP</div>
+    <div class="container">
+        <h2>Вход в аккаунт</h2>
+        <div class="login-form">
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Пароль" required>
+            <button onclick="login()">Войти</button>
+        </div>
+        <p id="error-message" style="color: red;"></p>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyB9NsKTMAJSRFR9xNH8GPSwVzPk7a508co",
+            authDomain: "smac-money.firebaseapp.com",
+            projectId: "smac-money",
+            storageBucket: "smac-money.firebasestorage.app",
+            messagingSenderId: "791077799684",
+            appId: "1:791077799684:web:74e621e46de1a278817251"
+        };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        function login() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    window.location.href = "index.html"; // Перенаправить на главную страницу после успешного входа
+                })
+                .catch((error) => {
+                    document.getElementById("error-message").textContent = error.message;
+                });
+        }
+    </script>
+</body>
+</html>
