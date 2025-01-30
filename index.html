@@ -85,7 +85,7 @@
 
     <script>
         const firebaseConfig = {
-          apiKey: "AIzaSyB9NsKTMAJSRFR9xNH8GPSwVzPk7a508co",
+         apiKey: "AIzaSyB9NsKTMAJSRFR9xNH8GPSwVzPk7a508co",
             authDomain: "smac-money.firebaseapp.com",
             databaseURL: "https://smac-money-default-rtdb.firebaseio.com",
             projectId: "smac-money",
@@ -116,7 +116,7 @@
             const newsText = document.getElementById("news-text").value;
             if (newsText.trim() === "") return;
 
-            const newsRef = db.ref("news").push();
+            const newsRef = db.ref("News").push();
             newsRef.set({
                 text: newsText,
                 timestamp: Date.now(),
@@ -128,7 +128,7 @@
 
         function loadNews() {
             const newsList = document.getElementById("news-list");
-            db.ref("news").orderByChild("timestamp").on("value", (snapshot) => {
+            db.ref("News").orderByChild("timestamp").on("value", (snapshot) => {
                 newsList.innerHTML = "";
                 const userPromises = [];
 
