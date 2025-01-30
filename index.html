@@ -74,7 +74,7 @@
     <div class="header">Smacnie APK GROUP</div>
     <div class="container">
         <h2 style="text-align: center;">Смачные APK</h2>
-        <h2>Отправить в группу</h2>
+        <h2>Добавить в группу</h2>
         <div class="news-form">
             <textarea id="news-text" placeholder="Напишите сообщение..."></textarea>
             <button onclick="addNews()">Отправить</button>
@@ -100,7 +100,7 @@
 
         auth.onAuthStateChanged(user => {
             if (!user) {
-                window.location.href = '/site/login.html'; // Использование относительного пути
+                window.location.href = '/site/login.html';
             } else {
                 loadNews();
             }
@@ -109,17 +109,28 @@
         function addNews() {
             const user = auth.currentUser;
             if (!user) {
-                window.location.href = '/site/login.html'; // Использование относительного пути
+                window.location.href = '/site/login.html';
                 return;
             }
 
             const newsText = document.getElementById("news-text").value;
             if (newsText.trim() === "") return;
 
-            const newsRef = db.ref("news").push();
-            newsRef.set({ text: newsText, timestamp: Date.now() });
+            // Получаем имя пользователя из базы данных
+            const userRef = db.ref(`Users/${user.uid}/name`);
+            userRef.once('value').then(snapshot => {
+                const userName = snapshot.val();
 
-            document.getElementById("news-text").value = "";
+                const newsRef = db.ref("news").push();
+                newsRef.set({
+                    text: newsText,
+                    timestamp: Date.now(),
+                    userUID: user.uid,
+                    userName: userName
+                });
+
+                document.getElementById("news-text").value = "";
+            });
         }
 
         function loadNews() {
@@ -136,7 +147,7 @@
                     const formattedDate = date.toLocaleDateString("ru-RU");
                     const formattedTime = date.toLocaleTimeString("ru-RU");
 
-                    newsItem.textContent = `${newsData.text} - ${formattedDate} ${formattedTime}`;
+                    newsItem.textContent = `${newsData.text} - ${newsData.userName} - ${formattedDate} ${formattedTime}`;
                     newsList.prepend(newsItem);
                 });
             });
@@ -144,3 +155,4 @@
     </script>
 </body>
 </html>
+
