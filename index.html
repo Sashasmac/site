@@ -85,7 +85,7 @@
 
     <script>
         const firebaseConfig = {
-         apiKey: "AIzaSyB9NsKTMAJSRFR9xNH8GPSwVzPk7a508co",
+            apiKey: "AIzaSyB9NsKTMAJSRFR9xNH8GPSwVzPk7a508co",
             authDomain: "smac-money.firebaseapp.com",
             databaseURL: "https://smac-money-default-rtdb.firebaseio.com",
             projectId: "smac-money",
@@ -134,7 +134,9 @@
 
                 snapshot.forEach((childSnapshot) => {
                     const newsData = childSnapshot.val();
-                    const userPromise = db.ref(`Users/${newsData.userUID}/name`).once('value');
+                    const userPath = `Users/${newsData.userUID}/name`;
+                    console.log('Получение имени по пути:', userPath); // Добавляем вывод пути в консоль
+                    const userPromise = db.ref(userPath).once('value');
                     userPromises.push(userPromise);
                 });
 
@@ -161,6 +163,7 @@
     </script>
 </body>
 </html>
+
 
 
 
