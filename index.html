@@ -6,6 +6,7 @@
     <title>Smacnie APK Market</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <style>
         body {
@@ -84,19 +85,34 @@
 
     <script>
         const firebaseConfig = {
-            apiKey: "AIzaSyBfou0J5GebRxk3VowHOFAUdphdcvTbv1Q",
-            authDomain: "smac-money.firebaseapp.com",
-            databaseURL: "https://smac-money-default-rtdb.firebaseio.com/",
-            projectId: "smac-money",
-            storageBucket: "smac-money.firebasestorage.app",
-            messagingSenderId: "791077799684",
-            appId: "1:791077799684:web:74e621e46de1a278817251"
+            apiKey: "ВАШ API-KEY",
+            authDomain: "ВАШ DOMAIN",
+            databaseURL: "ВАШ DATABASE URL",
+            projectId: "ВАШ PROJECT ID",
+            storageBucket: "ВАШ STORAGE BUCKET",
+            messagingSenderId: "ВАШ SENDER ID",
+            appId: "ВАШ APP ID"
         };
 
         const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
         const db = firebase.database();
 
+        auth.onAuthStateChanged(user => {
+            if (!user) {
+                window.location.href = '/login.html';
+            } else {
+                loadNews();
+            }
+        });
+
         function addNews() {
+            const user = auth.currentUser;
+            if (!user) {
+                window.location.href = '/login.html';
+                return;
+            }
+
             const newsText = document.getElementById("news-text").value;
             if (newsText.trim() === "") return;
 
@@ -125,12 +141,8 @@
                 });
             });
         }
-
-        loadNews();
     </script>
 </body>
 </html>
-
-
 
 
