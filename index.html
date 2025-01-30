@@ -116,21 +116,14 @@
             const newsText = document.getElementById("news-text").value;
             if (newsText.trim() === "") return;
 
-            // Получаем имя пользователя из базы данных
-            const userRef = db.ref(`Users/${user.uid}/name`);
-            userRef.once('value').then(snapshot => {
-                const userName = snapshot.val();
-
-                const newsRef = db.ref("news").push();
-                newsRef.set({
-                    text: newsText,
-                    timestamp: Date.now(),
-                    userUID: user.uid,
-                    userName: userName
-                });
-
-                document.getElementById("news-text").value = "";
+            const newsRef = db.ref("news").push();
+            newsRef.set({
+                text: newsText,
+                timestamp: Date.now(),
+                userUID: user.uid
             });
+
+            document.getElementById("news-text").value = "";
         }
 
         function loadNews() {
@@ -147,7 +140,7 @@
                     const formattedDate = date.toLocaleDateString("ru-RU");
                     const formattedTime = date.toLocaleTimeString("ru-RU");
 
-                    newsItem.textContent = `${newsData.text} - ${newsData.userName} - ${formattedDate} ${formattedTime}`;
+                    newsItem.textContent = `${newsData.text} - UID: ${newsData.userUID} - ${formattedDate} ${formattedTime}`;
                     newsList.prepend(newsItem);
                 });
             });
@@ -155,4 +148,5 @@
     </script>
 </body>
 </html>
+
 
