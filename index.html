@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smacnie APK Market</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -26,41 +28,44 @@
             margin: 20px auto;
             padding: 20px;
         }
-        .apk-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-            padding: 0;
-        }
-        .apk-item {
+        .news-form {
             background: white;
-            width: 280px;
             padding: 15px;
-            border-radius: 10px;
+            border-radius: 5px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
+            margin-bottom: 20px;
         }
-        .apk-item img {
-            width: 100px;
+        .news-form textarea {
+            width: 100%;
             height: 100px;
-            object-fit: cover;
-            border-radius: 10px;
-            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
         }
-        .apk-item a {
-            display: inline-block;
+        .news-form button {
+            display: block;
             margin-top: 10px;
             padding: 10px 15px;
             background: #0073e6;
             color: white;
-            text-decoration: none;
-            font-size: 16px;
+            border: none;
             border-radius: 5px;
+            cursor: pointer;
             transition: 0.3s;
         }
-        .apk-item a:hover {
+        .news-form button:hover {
             background: #005bb5;
+        }
+        .news-list {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .news-item {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
         }
     </style>
 </head>
@@ -68,24 +73,54 @@
     <div class="header">Smacnie APK Market</div>
     <div class="container">
         <h2 style="text-align: center;">Популярные APK</h2>
-        <div class="apk-list">
-            <div class="apk-item">
-                <img src="https://image.jimcdn.com/app/cms/image/transf/none/path/sa948101d4666144c/image/i9c3b67343a84e208/version/1734725125/image.png" alt="App 1">
-                <h3>App 1</h3>
-                <a href="https://freeapkmarket.jimdofree.com/app1.apk">Скачать</a>
-            </div>
-            <div class="apk-item">
-                <img src="https://via.placeholder.com/100" alt="App 2">
-                <h3>App 2</h3>
-                <a href="https://freeapkmarket.jimdofree.com/app2.apk">Скачать</a>
-            </div>
-            <div class="apk-item">
-                <img src="https://via.placeholder.com/100" alt="App 3">
-                <h3>App 3</h3>
-                <a href="https://freeapkmarket.jimdofree.com/app3.apk">Скачать</a>
-            </div>
+        <h2>Добавить новость</h2>
+        <div class="news-form">
+            <textarea id="news-text" placeholder="Напишите новость..."></textarea>
+            <button onclick="addNews()">Опубликовать</button>
         </div>
+        <h2>Новости</h2>
+        <div id="news-list" class="news-list"></div>
     </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBfou0J5GebRxk3VowHOFAUdphdcvTbv1Q",
+            authDomain: "smac-money.firebaseapp.com",
+            databaseURL: "https://smac-money-default-rtdb.firebaseio.com/",
+            projectId: "smac-money",
+            storageBucket: "smac-money.firebasestorage.app",
+            messagingSenderId: "791077799684",
+            appId: "1:791077799684:web:74e621e46de1a278817251"
+        };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        function addNews() {
+            const newsText = document.getElementById("news-text").value;
+            if (newsText.trim() === "") return;
+
+            const newsRef = db.ref("news").push();
+            newsRef.set({ text: newsText, timestamp: Date.now() });
+
+            document.getElementById("news-text").value = "";
+        }
+
+        function loadNews() {
+            const newsList = document.getElementById("news-list");
+            db.ref("news").orderByChild("timestamp").on("value", (snapshot) => {
+                newsList.innerHTML = "";
+                snapshot.forEach((childSnapshot) => {
+                    const newsItem = document.createElement("div");
+                    newsItem.classList.add("news-item");
+                    newsItem.textContent = childSnapshot.val().text;
+                    newsList.prepend(newsItem);
+                });
+            });
+        }
+
+        loadNews();
+    </script>
 </body>
 </html>
 
