@@ -78,7 +78,7 @@
             <textarea id="news-text" placeholder="Напишите сообщение..."></textarea>
             <button onclick="addNews()">Отправить</button>
         </div>
-        <h2>Сообшения</h2>
+        <h2>Сообщения</h2>
         <div id="news-list" class="news-list"></div>
     </div>
 
@@ -113,7 +113,14 @@
                 snapshot.forEach((childSnapshot) => {
                     const newsItem = document.createElement("div");
                     newsItem.classList.add("news-item");
-                    newsItem.textContent = childSnapshot.val().text;
+
+                    const newsData = childSnapshot.val();
+                    const date = new Date(newsData.timestamp);
+
+                    const formattedDate = date.toLocaleDateString("ru-RU");
+                    const formattedTime = date.toLocaleTimeString("ru-RU");
+
+                    newsItem.textContent = `${newsData.text} - ${formattedDate} ${formattedTime}`;
                     newsList.prepend(newsItem);
                 });
             });
