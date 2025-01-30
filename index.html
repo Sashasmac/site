@@ -100,7 +100,7 @@
 
         auth.onAuthStateChanged(user => {
             if (!user) {
-                window.location.href = '/login.html';
+                window.location.href = '/site/login.html';
             } else {
                 loadNews();
             }
@@ -109,7 +109,7 @@
         function addNews() {
             const user = auth.currentUser;
             if (!user) {
-                window.location.href = '/login.html';
+                window.location.href = '/site/login.html';
                 return;
             }
 
