@@ -23,6 +23,7 @@
             font-size: 26px;
             font-weight: bold;
             color: white;
+            position: relative;
         }
         .container {
             max-width: 900px;
@@ -76,7 +77,9 @@
             padding: 10px 15px;
             cursor: pointer;
             transition: 0.3s;
-            margin-top: 20px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
         }
         .logout-button:hover {
             background: #e60000;
@@ -84,10 +87,12 @@
     </style>
 </head>
 <body>
-    <div class="header">Smacnie APK GROUP</div>
+    <div class="header">
+        Smacnie APK GROUP
+        <button class="logout-button" onclick="logout()">Выйти из аккаунта</button>
+    </div>
     <div class="container">
         <h2 style="text-align: center;">Смачные APK</h2>
-        <button class="logout-button" onclick="logout()">Выйти из аккаунта</button>
         <h2>Добавить в группу</h2>
         <div class="news-form">
             <textarea id="news-text" placeholder="Напишите сообщение..."></textarea>
@@ -188,6 +193,7 @@
     </script>
 </body>
 </html>
+
 
 
 
