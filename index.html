@@ -135,8 +135,6 @@
                 snapshot.forEach((childSnapshot) => {
                     const newsData = childSnapshot.val();
                     const userPath = `users/${newsData.userUID}/name`;
-                    console.log('Получение имени по пути:', userPath); // Вывод пути в консоль
-                    console.log('UID пользователя:', newsData.userUID); // Вывод UID пользователя в консоль
                     const userPromise = db.ref(userPath).once('value');
                     userPromises.push(userPromise);
                 });
@@ -154,9 +152,11 @@
                         const formattedTime = date.toLocaleTimeString("ru-RU");
                         const userName = results[index].val();
 
-                        console.log('Имя пользователя:', userName); // Вывод имени пользователя в консоль
-
-                        newsItem.textContent = `${newsData.text} - ${userName} - ${formattedDate} ${formattedTime}`;
+                        newsItem.innerHTML = `
+                            <span class="message-text">${newsData.text}</span><br>
+                            <span class="username">${userName}</span><br>
+                            <span class="timestamp">${formattedDate} ${formattedTime}</span>
+                        `;
                         newsList.prepend(newsItem);
                         index++;
                     });
@@ -166,7 +166,5 @@
     </script>
 </body>
 </html>
-
-
 
 
