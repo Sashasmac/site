@@ -68,12 +68,26 @@
             padding: 10px;
             border-bottom: 1px solid #ddd;
         }
+        .logout-button {
+            background: #ff4c4c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 20px;
+        }
+        .logout-button:hover {
+            background: #e60000;
+        }
     </style>
 </head>
 <body>
     <div class="header">Smacnie APK GROUP</div>
     <div class="container">
         <h2 style="text-align: center;">Смачные APK</h2>
+        <button class="logout-button" onclick="logout()">Выйти из аккаунта</button>
         <h2>Добавить в группу</h2>
         <div class="news-form">
             <textarea id="news-text" placeholder="Напишите сообщение..."></textarea>
@@ -163,8 +177,17 @@
                 });
             });
         }
+
+        function logout() {
+            auth.signOut().then(() => {
+                window.location.href = '/site/login.html';
+            }).catch((error) => {
+                console.error('Ошибка при выходе из аккаунта:', error);
+            });
+        }
     </script>
 </body>
 </html>
+
 
 
